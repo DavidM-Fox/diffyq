@@ -83,6 +83,7 @@ void diffyq::ivp::diffyq_solve
     std::cout << info << ans << '\n';
 }
 
+// Estimate y(t) with Predictor Corrector Method
 double diffyq::ivp::method_PC(
     const double &t0, 
     const double &y0,
@@ -113,16 +114,13 @@ double diffyq::ivp::method_PC(
     return Yi;
 }
 
+// Estimate y(t) with AB2 Method
 double diffyq::ivp::method_AB2(
     const double &t0, 
     const double &y0,
     const double &t, 
     const double &h)
 {
-    double f12 = (1.0 / 2.0);
-	double f32 = (3.0 / 2.0);
-
-
 	// 1 step of a 2nd Order Method is required,
 	// Will use PC c1=1/4
     double Y0 = y0;
@@ -130,10 +128,8 @@ double diffyq::ivp::method_AB2(
 	double Yn = 0.0;
     double f1, f2;
 
-	// 2-Step AB2 on interval (IC_EVAL[0][1], IC_EVAL[1][1])
 	for (double i = t0 + h; i <= t; i += h)
     {
-		// Yn = Y1 + f32*h*f(i, Y1) - f12*h*f(i-h, Y0);
         this->m_t = i;
         this->m_y = Yi;
         f1 = this->m_expression.value();
@@ -148,6 +144,3 @@ double diffyq::ivp::method_AB2(
 	}
 	return Yn;
 }
-
-    
-
