@@ -1,7 +1,6 @@
 # diffyq
 
-A C++ library for solving simple 1st order differential equations (ODE) and their corresponding initival value problem (IVP). The ODE can be linear or non-linear, homogeneous or non-homogeneous in the format:
-<img src="https://render.githubusercontent.com/render/math?math=\frac{dy}{dt} = f(y,t)">
+A C++ library for solving simple 1st order differential equations (ODE) and their corresponding initival value problem (IVP). The ODE can be linear or non-linear, homogeneous or non-homogeneous in the format: dy/dt = f(y,t)
 
 This library currently only uses two numerical methods for estimating IVP solutions:
 * Predictor Corrector method (c=1/4)
