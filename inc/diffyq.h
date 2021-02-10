@@ -18,8 +18,6 @@ namespace diffyq
             ivp(std::string t_diffyq_string);
             ~ivp();
 
-            enum method {PC, AB2};
-
             void print_data();
             double eval(const double &val);
 
@@ -46,6 +44,5 @@ namespace diffyq
             parser_t            m_parser;
     };
 } // namespace diffyq
-
 
 #endif // !DIFFYQ_H

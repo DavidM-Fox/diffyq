@@ -2,7 +2,8 @@
 
 
 // ivp class constructor
-diffyq::ivp::ivp(std::string t_ivp_string) : m_ivp_string(t_ivp_string)
+diffyq::ivp::ivp(std::string t_ivp_string)
+: m_ivp_string(t_ivp_string)
 { 
     parse_ivp_string();
 }
@@ -10,34 +11,41 @@ diffyq::ivp::ivp(std::string t_ivp_string) : m_ivp_string(t_ivp_string)
 // ivp class deconstructor
 diffyq::ivp::~ivp() {}
 
+// Print class data
 void diffyq::ivp::print_data()
 {
     std::cout << "RHS: " << this->m_ode_rhs << '\n';
     std::cout << "t0: " << this->m_t0 << '\n';
     std::cout << "y(t0):" << this->m_y0 << '\n';
     std::cout << "method: " << this->m_method << '\n';
-    std::cout << "h step: " << this->m_h << '\n';
-
+    std::cout << "h step: " << this->m_h << std::endl;
 }
 
+// Parses ivp string into its component fields
 void diffyq::ivp::parse_ivp_string()
 {
+    // Remove whitespace from input string
     this->m_ivp_string.erase(remove(
         this->m_ivp_string.begin(),
         this->m_ivp_string.end(), ' '),
         this->m_ivp_string.end());
 
+    /*
+    *  regex for:
+    *      y'(t) = f(y, t)
+    *      y(t0) = y_0
+    *      method = XYZ
+    *      h = FLOAT
+    */
     std::regex eq_expr ("[a-zA-Z]['][=][a-zA-Z-+()*^0-9\\/]*");
     std::regex ic_expr ("[a-zA-Z][(][0-9][)][=][0-9]");
     std::regex m_expr ("method[=][a-zA-Z0-9]*");
     std::regex h_expr ("h[=][0-9.]*");
-    std::regex val_expr ("[-+]?([0-9]*\\.[0-9]+|[0-9]+)");
 
     std::smatch eq_match;
     std::smatch ic_match;
     std::smatch m_match;
     std::smatch h_match;
-    std::smatch val_match;
 
     regex_search(this->m_ivp_string, eq_match, eq_expr);
     regex_search(this->m_ivp_string, ic_match, ic_expr);
@@ -53,10 +61,16 @@ void diffyq::ivp::parse_ivp_string()
     size_t pos = str_eq.find("=");
     this->m_ode_rhs = str_eq.substr(pos + 1, str_eq.length());
 
-    // Set initical conditions y(t0) = y0 
+    /*
+    * Set initial conditions t0 and y0
+    * regex for finding t0 and y0 in: y(t0) = y0
+    */
+    std::regex val_expr ("[-+]?([0-9]*\\.[0-9]+|[0-9]+)");
+    std::smatch val_match;
+
     std::stringstream ss;
     std::string::const_iterator search_start(str_ic.cbegin());
-    while ( regex_search(search_start, str_ic.cend(), val_match, val_expr))
+    while (regex_search(search_start, str_ic.cend(), val_match, val_expr))
     {
         ss << val_match[0] << ' ';
         search_start = val_match.suffix().first;
@@ -111,9 +125,7 @@ void diffyq::ivp::diffyq_parse()
     }
 }
 
-/*
-* Attemps to estimate y(t) with known y(t0) and stepsize h
-*/
+// Estimate y(t) with known y(t0) using the chosen method
 double diffyq::ivp::eval(const double &val)
 {
     diffyq_parse();
@@ -128,7 +140,7 @@ double diffyq::ivp::eval(const double &val)
     return -1;
 }
 
-// Estimate y(t) with Predictor Corrector Method
+// Estimate y(t) with PC Method
 double diffyq::ivp::method_PC(const double &val)
 {
     // Define Yi and Yn
@@ -139,7 +151,7 @@ double diffyq::ivp::method_PC(const double &val)
     
     double f1, f2;
 
-	// From t_start -> t_eval (IC to EVAL)
+    // Iterate from t0 to val by stepsize h
     for (i; i <= val; i += h)
     {
         this->m_t = i;
@@ -158,8 +170,7 @@ double diffyq::ivp::method_PC(const double &val)
 // Estimate y(t) with AB2 Method
 double diffyq::ivp::method_AB2(const double &val)
 {
-	// 1 step of a 2nd Order Method is required,
-	// Will use PC c1=1/4
+    // 1 step of a 2nd Order Method is required, using PC(c1=1/4)
     double Y0 = this->m_y0;
     double t0 = this->m_t0; 
     double h  = this->m_h; 
@@ -167,6 +178,8 @@ double diffyq::ivp::method_AB2(const double &val)
     double Yi = method_PC(val_ab2); 
     double Yn = 0.0;
     double f1, f2;
+
+    // Iterate from t0+h to val by stepsize h
     for (double i = t0 + h; i <= val; i += h)
     {
         this->m_t = i;

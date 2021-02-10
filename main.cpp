@@ -3,7 +3,7 @@
 
 int main(int, char**) 
 {
-    std::string ode ("y' = t*2 + (1/y^2), y(1) = 2, method = AB2, h = 0.1");
+    std::string ode ("y' = t*2 + (1/y^2), y(3) = 2, method = PC, h = 0.01");
     diffyq::ivp IVP(ode);
     IVP.print_data();
 
