@@ -10,9 +10,17 @@ The ivp class takes a comma separated input string with the following required f
 
 ```c++
 
-std::string input("y' = t*2 + (1/y^2), y(1) = 2, method = AB2, h = 0.1")
-diffyq::ivp IVP(input);
-std::cout << IVP.eval(3) << std::endl;
+#include <iostream>
+#include "inc/diffyq.h"
+
+int main(int, char**) 
+{
+  std::string input("y' = t*2 + (1/y^2), y(1) = 2, method = AB2, h = 0.1")
+  diffyq::ivp IVP(input);
+  std::cout << IVP.eval(3) << std::endl;#include <iostream>
+
+  return 0;
+}
 
 ```
 
