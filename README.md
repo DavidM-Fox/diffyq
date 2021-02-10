@@ -8,11 +8,11 @@ The ivp class takes an input string which states the:
 * Numerical Method: "method = XYZ"
 * h step: "h = X.X"
 
-'''
+```
 
 diffyq::ivp IVP("y' = t*2 + (1/y^2), y(1) = 2, method = AB2, h = 0.1")
 
-'''
+```
 
 
 
