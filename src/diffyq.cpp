@@ -132,27 +132,26 @@ double diffyq::ivp::eval(const double &val)
 double diffyq::ivp::method_PC(const double &val)
 {
     // Define Yi and Yn
-	double Yi = this->m_y0;
+    double Yi = this->m_y0;
     double i = this->m_t0;
     double h = this->m_h;
-	double Yn = 0.0;
-
+    double Yn = 0.0;
+    
     double f1, f2;
 
 	// From t_start -> t_eval (IC to EVAL)
-	for (i; i <= val; i += h)
+    for (i; i <= val; i += h)
     {
         this->m_t = i;
-        this->m_y = Yi; 
+        this->m_y = Yi;
         f1 = this->m_expression.value();
-
+        
         this->m_t = i + (2.0/3.0) * h;
-        this->m_y = Yi + (2.0/3.0) *h*f1; 
+        this->m_y = Yi + (2.0/3.0) *h*f1;
         f2 = this->m_expression.value();
-
-		Yn = Yi + h * (0.25*f1 + 0.75*f2);
-		Yi = Yn;
-	}
+        Yn = Yi + h * (0.25*f1 + 0.75*f2);
+        Yi = Yn;
+    }
     return Yi;
 }
 
@@ -162,14 +161,13 @@ double diffyq::ivp::method_AB2(const double &val)
 	// 1 step of a 2nd Order Method is required,
 	// Will use PC c1=1/4
     double Y0 = this->m_y0;
-    double t0 = this->m_t0;
-    double h  = this->m_h;
-    double val_ab2 = t0 + h;
-	double Yi = method_PC(val_ab2);
-	double Yn = 0.0;
+    double t0 = this->m_t0; 
+    double h  = this->m_h; 
+    double val_ab2 = t0 + h; 
+    double Yi = method_PC(val_ab2); 
+    double Yn = 0.0;
     double f1, f2;
-
-	for (double i = t0 + h; i <= val; i += h)
+    for (double i = t0 + h; i <= val; i += h)
     {
         this->m_t = i;
         this->m_y = Yi;
@@ -178,10 +176,9 @@ double diffyq::ivp::method_AB2(const double &val)
         this->m_t = i-h;
         this->m_y = Y0;
         f2 = this->m_expression.value();
-        
         Yn = Yi + 1.5*h*f1 - 0.5*h*f2;
         Y0 = Yi;
         Yi = Yn;
-	}
-	return Yn;
+    }
+    return Yn;
 }
