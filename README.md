@@ -8,6 +8,8 @@ The ivp class takes a comma separated input string with the following required f
 * Numerical Method: "method = XYZ"
 * h step: "h = X.X"
 
+Here is an example usage of this library with a minmal main.cpp:
+
 ```c++
 
 #include <iostream>
