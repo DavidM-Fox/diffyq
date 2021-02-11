@@ -10,7 +10,7 @@ The input is saved to ```std::string m_ivp_string``` and then parsed by 5 differ
 * ```std::string m_ode_rhs``` = ```"f(y,t)"```
 * ```double m_t0``` = ```t0```
 * ```double m_y0``` = ```y0```
-* ```std::String m_method``` = ```"XYZ"```
+* ```std::string m_method``` = ```"XYZ"```
 * ```double m_h``` = ```X.X```
 
 The user can then call ```IVP.eval(t)``` to estimate y(t) of the ODE's solution. Here is an example usage of this library with a minmal main.cpp:
