@@ -24,7 +24,8 @@ int main(int, char**)
 {
   std::string input("y' = t*2 + (1/y^2), y(1) = 2, method = AB2, h = 0.1")
   diffyq::ivp IVP(input);
-  std::cout << IVP.eval(3) << std::endl;
+  std::cout << IVP.eval(3) << std::endl; // IVP.eval(3) returns 10.3582
+
 
   return 0;
 }
