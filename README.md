@@ -1,6 +1,6 @@
 # Diffyq
 
-A C++ library for numerically solving 1st order ordinary differential equations ([ODE](https://en.wikipedia.org/wiki/Ordinary_differential_equation)) with a corresponding initival condition (IC). The ODE can be linear or non-linear, homogeneous or non-homogeneous in the format: y' = f(y,t). [Exprtk](https://github.com/ArashPartow/exprtk) is used for expression parsing.
+A C++ library for numerically solving 1st order ordinary differential equations ([ODE](https://en.wikipedia.org/wiki/Ordinary_differential_equation)) with a corresponding initial condition (IC). The ODE can be linear or non-linear, homogeneous or non-homogeneous in the format: y' = f(y,t). [Exprtk](https://github.com/ArashPartow/exprtk) is used for expression parsing.
 
 ## Using Diffyq
 The library ```diffyq``` consists of a class named ```diffyq::IVP``` that is constructed with a comma separated input string:
