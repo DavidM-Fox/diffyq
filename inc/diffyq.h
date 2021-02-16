@@ -1,30 +1,31 @@
 #ifndef DIFFYQ_H
 #define DIFFYQ_H
-#include "../inc/exprtk.hpp"
+#include "exprtk.hpp"
 #include <iostream>
 #include <regex>
 #include <string>
+
+namespace diffyq {
 
 typedef exprtk::symbol_table<double> symbol_table_t;
 typedef exprtk::expression<double> expression_t;
 typedef exprtk::parser<double> parser_t;
 typedef exprtk::parser_error::type error_t1;
 
-namespace diffyq {
-class ivp {
+class IVP {
 public:
-    ivp(std::string t_diffyq_string);
-    ~ivp();
+    IVP(std::string t_diffyq_string);
+    ~IVP();
 
-    void print_data();
     double eval(const double &val);
+    void printData();
 
 private:
-    void parse_ivp_string();
-    void diffyq_parse();
+    void parseIvpString();
+    void parseDiffyq();
 
-    double method_PC(const double &val);
-    double method_AB2(const double &val);
+    double methodPC(const double &val);
+    double methodAB2(const double &val);
 
     std::string m_ivp_string;
     std::string m_ode_rhs;

@@ -1,16 +1,29 @@
 #include "../inc/diffyq.h"
 
-// ivp class constructor
-diffyq::ivp::ivp(std::string t_ivp_string) : m_ivp_string(t_ivp_string)
+// IVP class constructor
+diffyq::IVP::IVP(std::string t_ivp_string) : m_ivp_string(t_ivp_string)
 {
-    parse_ivp_string();
+    parseIvpString();
 }
 
-// ivp class deconstructor
-diffyq::ivp::~ivp() {}
+// IVP class deconstructor
+diffyq::IVP::~IVP() {}
+
+// Estimate y(t) with known y(t0) using the chosen method
+double diffyq::IVP::eval(const double &val)
+{
+    parseDiffyq();
+    if (this->m_method == "PC") {
+        return methodPC(val);
+    }
+    else if (this->m_method == "AB2") {
+        return methodAB2(val);
+    }
+    return -1;
+}
 
 // Print class data
-void diffyq::ivp::print_data()
+void diffyq::IVP::printData()
 {
     std::cout << "RHS: " << this->m_ode_rhs << '\n';
     std::cout << "t0: " << this->m_t0 << '\n';
@@ -19,8 +32,8 @@ void diffyq::ivp::print_data()
     std::cout << "h step: " << this->m_h << std::endl;
 }
 
-// Parses ivp string into its component fields
-void diffyq::ivp::parse_ivp_string()
+// Parses IVP string into its component fields
+void diffyq::IVP::parseIvpString()
 {
     // Remove whitespace from input string
     this->m_ivp_string.erase(
@@ -82,8 +95,8 @@ void diffyq::ivp::parse_ivp_string()
     this->m_h = std::stod(str_h.substr(pos + 1, str_h.length()));
 }
 
-// PRIVATE: Compiles m_parser for ivp
-void diffyq::ivp::diffyq_parse()
+// PRIVATE: Compiles m_parser for IVP
+void diffyq::IVP::parseDiffyq()
 {
     this->m_symbol_table.add_variable("y", this->m_y);
     this->m_symbol_table.add_variable("t", this->m_t);
@@ -113,21 +126,8 @@ void diffyq::ivp::diffyq_parse()
     }
 }
 
-// Estimate y(t) with known y(t0) using the chosen method
-double diffyq::ivp::eval(const double &val)
-{
-    diffyq_parse();
-    if (this->m_method == "PC") {
-        return method_PC(val);
-    }
-    else if (this->m_method == "AB2") {
-        return method_AB2(val);
-    }
-    return -1;
-}
-
 // Estimate y(t) with PC Method
-double diffyq::ivp::method_PC(const double &val)
+double diffyq::IVP::methodPC(const double &val)
 {
     // Define Yi and Yn
     double Yi = this->m_y0;
@@ -153,14 +153,14 @@ double diffyq::ivp::method_PC(const double &val)
 }
 
 // Estimate y(t) with AB2 Method
-double diffyq::ivp::method_AB2(const double &val)
+double diffyq::IVP::methodAB2(const double &val)
 {
     // 1 step of a 2nd Order Method is required, using PC(c1=1/4)
     double Y0 = this->m_y0;
     double t0 = this->m_t0;
     double h = this->m_h;
     double val_ab2 = t0 + h;
-    double Yi = method_PC(val_ab2);
+    double Yi = methodPC(val_ab2);
     double Yn = 0.0;
     double f1, f2;
 
